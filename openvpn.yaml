@@ -1,0 +1,33 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  become: yes
+  tasks:
+  - name: update apt cache
+    apt:
+      update_cache: yes
+  - name: add openvpn
+    apt:
+      name: openvpn
+      state: present
+  - name: create openvpn dir
+    file:
+      path: /etc/openvpn/keys
+      state: directory
+      mode: 0700
+  - name: setup openvpn
+    script: setupvpn.sh
+  - name: fetch ca.pem
+    fetch:
+      src: /etc/openvpn/ca.pem
+      dest: ca.pem
+  - name: copy openvpn server config
+    copy:
+      src: server.conf
+      dest: /etc/openvpn/server.conf
+      mode: 0644
+  - name: start openvpn
+    service:
+      enabled: yes
+      state: started
+      name: openvpn

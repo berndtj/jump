@@ -1,0 +1,2 @@
+*nat
+-A POSTROUTING -j MASQUERADE

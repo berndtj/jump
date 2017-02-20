@@ -1,0 +1,15 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  become: yes
+  tasks:
+  - name: update sysctl
+    copy:
+      src: sysctl.conf
+      dest: /etc/sysctl.conf
+      mode: 0644
+  - name: update interfaces
+    copy:
+      src: interfaces
+      dest: /etc/network/interfaces
+      mode: 0644
